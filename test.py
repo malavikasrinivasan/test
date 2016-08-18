@@ -5,19 +5,22 @@
 #   Do not edit lines with comments that start with: "# Last line in"
 ###############################################################################
 # Imports  # there will only be two imports added here.
-
+import os
+import sys
 
 ###############################################################################
 # Write f01 that prints "Hello World!" and calls f02. (three lines)
 def f01():
-
+    print("Hello World!")
     f02()
+
 
 
 ###############################################################################
 # Write f02 that sets the variables x, y, and z equal to the words
 # necessary to have the f03 print "i love python!" (five lines)
-
+def f02():
+    x, y, z = "i", "love", "python!"
 
 
 
@@ -27,7 +30,7 @@ def f01():
 ###############################################################################
 # Finish f03 (replace the ????).
 def f03(*words):
-    truth = " ".????(words)  # This is broken.
+    truth = " ".join(words)  # This is broken.
     truth_emphasized = truth + "!"
     print(truth_emphasized)
     f04(truth)  # Last line in f03()
@@ -37,7 +40,7 @@ def f03(*words):
 # Write f04 that prints truth backwards (edit one line only)
 # Ex. f4("Littlest Bear") prints "raeB tselttiL"
 def f04(string):
-
+    print(string[::-1])
     f05(string)  # Last line in f04()
 
 
@@ -51,6 +54,8 @@ def f04(string):
 #   Info
 #    Info
 def f05(word):
+    for indent, char in enumerate(word):
+        print(" "*indent+word)
 
 
 
@@ -71,6 +76,19 @@ def f05(word):
 # 'longer_string' is longer than 'short_string' by 1 chars
 # 'short_string' has only 92.31% the number of chars of longer_string
 def f06(string1, string2):
+    diff = len(string1) - len(string2) 
+    if diff > 0:
+        print("{} is longer than {} by {} chars".format(string1, string2, diff))
+        perc = len(string2)/len(string1) * 100
+        print("{} has only {:.2f}% the number of chars of {}".format(string1, perc, string2))
+    elif diff < 0:
+        print("{} is longer than {} by {} chars".format(string2, string1, diff))
+        perc = len(string1)/len(string2) * 100
+        print("{} has only {:.2f}% the number of chars of {}".format(string2, perc, string1))
+    else:
+        print("{} and {} are of equal length".format(string1, string2))
+        perc = 100
+        print("{} has only {:.2f}% the number of chars of {}".format(string1, perc, string2))
 
 
 
@@ -96,7 +114,7 @@ def various_solutions():
     while_ = f07()
     for_ = f08()
     list_comprehension = f09()
-    recursion = f10()
+    recursion = f10(1, 0)
     # DO NOT EDIT BELOW THIS LINE
     vals = [while_, for_, list_comprehension, recursion]
     for val in vals:
@@ -113,22 +131,35 @@ def various_solutions():
 
 ###############################################################################
 def f07():
-    ...
+    number = 1
+    sum_ = 0
+    while number < 500:
+        if number % 3 == 0 or number % 5 == 0:
+            sum_ += number
+        number += 1
+    return sum_
 
 
 ###############################################################################
 def f08():
-    ...
+    sum_ = 0
+    for number in range(1, 500):
+        if number % 3 == 0 or number % 5 == 0:
+            sum_ += number
+    return sum_
 
 
 ###############################################################################
 def f09():
-    ...
+    return sum([number for number in range(1, 500) if number % 3 == 0 or number % 5 == 0])
 
 
 ###############################################################################
-def f10():
-    ...
+def f10(n, sum_):
+    if n == 500:
+        return sum_
+    else:
+        return f10(n+1, sum_+n)
 
 
 ###############################################################################
@@ -136,7 +167,19 @@ def f10():
 # strings, integers if they started as floats, and as the value 0 if they
 # started as ints.
 def f11(args):
-    ...
+    arg_type = str(type(args))
+    print(args, arg_type)
+    try:
+        if "str" in arg_type:
+            print(float(args))
+        elif "float" in arg_type:
+            print(int(args))
+        elif "int" in arg_type:
+            print(0)
+        else:
+            print(args)
+    except:
+        print("Could not cast.")
 
 
 ###############################################################################
@@ -152,8 +195,22 @@ def f11(args):
 # Ex. printing
 #   [1.0, 1.3, 2.443]
 def f12():
-    ...
-
+    user_input = ""
+    success_floats = []
+    while True:
+        try:
+            user_input = input("Enter input: ")
+            user_input = float(user_input)
+        except:
+            with open("log_file.txt", "a") as f:
+                if user_input != "done":
+                    f.write(user_input+"\n")
+                else:
+                    break
+        else:
+            success_floats.append(user_input)
+            # print(success_floats)
+    print(success_floats)
 
 
 
@@ -164,7 +221,7 @@ def f12():
 ###############################################################################
 # Fix the error in f13:
 def f13():
-    for each in "string"
+    for each in "string":
         print(each)
     f14()  # Last line in f13()
 
@@ -175,6 +232,7 @@ def f13():
 # Please do so at the top of the file.
 # Ex. /Users/dsg/pbc_2016/test/test_danielsgriffin.py
 def f14():
+    print(os.getcwd()+"/"+sys.argv[0])
 
 
     f15()  # Last line in f14()
@@ -195,7 +253,8 @@ def f14():
 # [[], [], [], [], [], [], [], [], [0], []]
 # [[], [], [], [], [], [], [], [], [], [0]]
 def f15():
-
+    """ ToDo
+    """
 
 
 
@@ -210,6 +269,8 @@ def f15():
 # Ex.
 # [1,2,3] and [4,5,6] would produce [(1, 4), (2, 5), (3, 6)]
 def f16(list1, list2):
+    print([(x, y) for x,y in zip(list1, list2)])
+
 
 
 
@@ -224,13 +285,21 @@ def f16(list1, list2):
 # with the index of the word in that line and the word, sharing tuples.
 # Ex. [(0, 'To'), (1, 'be'), (2, 'or'), (3, 'not'), (4, 'to'), (5, 'be')]
 def f17():
+    second_line_tuples = []
+    with open("few_words.txt") as f:
+        file_lines = f.readlines()
+    second_line = file_lines[1].strip().split()
+    for idx, word in enumerate(second_line):
+        second_line_tuples.append((idx, word))
+    print(second_line_tuples)
+
 
 
 
 
 
     # Be sure to save the list that you print to list_
-    list_ = your_list_name_here  # Change to your list variable name
+    list_ = second_line_tuples  # Change to your list variable name
     f18(list_)  # Last line in f17()
 
 
@@ -239,6 +308,8 @@ def f17():
 # Print the dictionary.
 # Call the dictionary in f19()
 def f18(list_):
+    d = {t[1]: t[0] for t in list_}
+    print(d)
 
 
 
@@ -324,7 +395,8 @@ def f23(lists_):
 # Write main() that calls f01, then prints the The Zen of Python, by Tim Peters.
 # (three lines)
 def main():
-    ...
+    f01()
+    import this
 
 
 
@@ -332,5 +404,6 @@ def main():
 
 
 # Write the boilerplate code. (two lines, plus empty line at end)
-
+if __name__ == "__main__":
+    main()
 
